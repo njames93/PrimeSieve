@@ -23,7 +23,7 @@ else()
   string(REGEX REPLACE "( |^)-fexceptions( |$)" " " NEW_FLAGS
                        "${CMAKE_CXX_FLAGS}")
   string(REGEX REPLACE "( |^)-frtti( |$)" " " NEW_FLAGS "${NEW_FLAGS}")
-  set(CMAKE_CXX_FLAGS "${NEW_FLAGS} -fno-exceptions -fno-rtti")
+  set(CMAKE_CXX_FLAGS "${NEW_FLAGS} -fno-exceptions -fno-rtti -Wall -Wextra")
 endif()
 
 add_library(PrimeValidation Validation.cpp)
