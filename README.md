@@ -18,63 +18,92 @@ Compiler:  clang-11
 
 ### Daves
 ```
-Passes: 1000000, Time: 0.045906, Avg: 0.000000, Limit: 10, Count: 4, Valid: 1
-Passes: 1000000, Time: 0.064095, Avg: 0.000000, Limit: 100, Count: 25, Valid: 1
-Passes: 1000000, Time: 0.515878, Avg: 0.000001, Limit: 1000, Count: 168, Valid: 1
-Passes: 1000000, Time: 5.391447, Avg: 0.000005, Limit: 10000, Count: 1229, Valid: 1
-Passes: 251546, Time: 15.000065, Avg: 0.000060, Limit: 100000, Count: 9592, Valid: 1
-Passes: 22342, Time: 15.000048, Avg: 0.000671, Limit: 1000000, Count: 78498, Valid: 1
-Passes: 2004, Time: 15.004117, Avg: 0.007487, Limit: 10000000, Count: 664579, Valid: 1
-Passes: 146, Time: 15.047212, Avg: 0.103063, Limit: 100000000, Count: 5761455, Valid: 1
-Passes: 5, Time: 17.516977, Avg: 3.503395, Limit: 1000000000, Count: 50847534, Valid: 1
-Passes: 2, Time: 15.517033, Avg: 7.758517, Limit: 2147483647, Count: 105097565, Valid: 1
+Passes: 100000000, Time: 3.243232, Avg: 0.000000, Limit: 10, Count: 4, Valid: 1
+Passes: 100000000, Time: 5.699103, Avg: 0.000000, Limit: 100, Count: 25, Valid: 1
+Passes: 39958581, Time: 20.000000, Avg: 0.000001, Limit: 1000, Count: 168, Valid: 1
+Passes: 3778059, Time: 20.000003, Avg: 0.000005, Limit: 10000, Count: 1229, Valid: 1
+Passes: 342596, Time: 20.000007, Avg: 0.000058, Limit: 100000, Count: 9592, Valid: 1
+Passes: 30610, Time: 20.000606, Avg: 0.000653, Limit: 1000000, Count: 78498, Valid: 1
+Passes: 2729, Time: 20.005983, Avg: 0.007331, Limit: 10000000, Count: 664579, Valid: 1
+Passes: 180, Time: 20.060686, Avg: 0.111448, Limit: 100000000, Count: 5761455, Valid: 1
+Passes: 6, Time: 21.938437, Avg: 3.656406, Limit: 1000000000, Count: 50847534, Valid: 1
+Passes: 3, Time: 25.899516, Avg: 8.633172, Limit: 2147483647, Count: 105097565, Valid: 1
 ```
 
-### AdvBitManip
+### FFSTwos
 ```
-Passes: 1000000, Time: 0.048081, Avg: 0.000000, Limit: 10, Count: 4, Valid: 1
-Passes: 1000000, Time: 0.108871, Avg: 0.000000, Limit: 100, Count: 25, Valid: 1
-Passes: 1000000, Time: 0.486957, Avg: 0.000000, Limit: 1000, Count: 168, Valid: 1
-Passes: 1000000, Time: 4.913975, Avg: 0.000005, Limit: 10000, Count: 1229, Valid: 1
-Passes: 301555, Time: 15.000046, Avg: 0.000050, Limit: 100000, Count: 9592, Valid: 1
-Passes: 27168, Time: 15.000485, Avg: 0.000552, Limit: 1000000, Count: 78498, Valid: 1
-Passes: 2454, Time: 15.002429, Avg: 0.006113, Limit: 10000000, Count: 664579, Valid: 1
-Passes: 173, Time: 15.019167, Avg: 0.086816, Limit: 100000000, Count: 5761455, Valid: 1
-Passes: 5, Time: 15.113925, Avg: 3.022785, Limit: 1000000000, Count: 50847534, Valid: 1
-Passes: 3, Time: 20.894022, Avg: 6.964674, Limit: 2147483647, Count: 105097565, Valid: 1
+Passes: 100000000, Time: 3.576860, Avg: 0.000000, Limit: 10, Count: 4, Valid: 1
+Passes: 100000000, Time: 10.210874, Avg: 0.000000, Limit: 100, Count: 25, Valid: 1
+Passes: 44140479, Time: 20.000000, Avg: 0.000000, Limit: 1000, Count: 168, Valid: 1
+Passes: 4340745, Time: 20.000003, Avg: 0.000005, Limit: 10000, Count: 1229, Valid: 1
+Passes: 394027, Time: 20.000002, Avg: 0.000051, Limit: 100000, Count: 9592, Valid: 1
+Passes: 36423, Time: 20.000008, Avg: 0.000549, Limit: 1000000, Count: 78498, Valid: 1
+Passes: 3186, Time: 20.002128, Avg: 0.006278, Limit: 10000000, Count: 664579, Valid: 1
+Passes: 210, Time: 20.003326, Avg: 0.095254, Limit: 100000000, Count: 5761455, Valid: 1
+Passes: 7, Time: 22.407134, Avg: 3.201019, Limit: 1000000000, Count: 50847534, Valid: 1
+Passes: 3, Time: 22.005517, Avg: 7.335172, Limit: 2147483647, Count: 105097565, Valid: 1
+```
+
+### FFSThrees
+```
+Passes: 100000000, Time: 3.512979, Avg: 0.000000, Limit: 10, Count: 4, Valid: 1
+Passes: 100000000, Time: 8.504156, Avg: 0.000000, Limit: 100, Count: 25, Valid: 1
+Passes: 58204466, Time: 20.000000, Avg: 0.000000, Limit: 1000, Count: 168, Valid: 1
+Passes: 6444321, Time: 20.000001, Avg: 0.000003, Limit: 10000, Count: 1229, Valid: 1
+Passes: 619084, Time: 20.000003, Avg: 0.000032, Limit: 100000, Count: 9592, Valid: 1
+Passes: 55938, Time: 20.000322, Avg: 0.000358, Limit: 1000000, Count: 78498, Valid: 1
+Passes: 4978, Time: 20.002046, Avg: 0.004018, Limit: 10000000, Count: 664579, Valid: 1
+Passes: 404, Time: 20.001944, Avg: 0.049510, Limit: 100000000, Count: 5761455, Valid: 1
+Passes: 8, Time: 21.131088, Avg: 2.641386, Limit: 1000000000, Count: 50847534, Valid: 1
+Passes: 4, Time: 24.541511, Avg: 6.135378, Limit: 2147483647, Count: 105097565, Valid: 1
 ```
 
 ## 03 -march=native
 
 ### Daves
 ```
-Passes: 1000000, Time: 0.040294, Avg: 0.000000, Limit: 10, Count: 4, Valid: 1
-Passes: 1000000, Time: 0.065508, Avg: 0.000000, Limit: 100, Count: 25, Valid: 1
-Passes: 1000000, Time: 0.423662, Avg: 0.000000, Limit: 1000, Count: 168, Valid: 1
-Passes: 1000000, Time: 4.312212, Avg: 0.000004, Limit: 10000, Count: 1229, Valid: 1
-Passes: 325615, Time: 15.000045, Avg: 0.000046, Limit: 100000, Count: 9592, Valid: 1
-Passes: 28459, Time: 15.000490, Avg: 0.000527, Limit: 1000000, Count: 78498, Valid: 1
-Passes: 2524, Time: 15.001941, Avg: 0.005944, Limit: 10000000, Count: 664579, Valid: 1
-Passes: 165, Time: 15.003354, Avg: 0.090929, Limit: 100000000, Count: 5761455, Valid: 1
-Passes: 5, Time: 15.753089, Avg: 3.150618, Limit: 1000000000, Count: 50847534, Valid: 1
-Passes: 3, Time: 21.857813, Avg: 7.285938, Limit: 2147483647, Count: 105097565, Valid: 1
+Passes: 100000000, Time: 3.296889, Avg: 0.000000, Limit: 10, Count: 4, Valid: 1
+Passes: 100000000, Time: 5.097393, Avg: 0.000000, Limit: 100, Count: 25, Valid: 1
+Passes: 50362056, Time: 20.000000, Avg: 0.000000, Limit: 1000, Count: 168, Valid: 1
+Passes: 4947494, Time: 20.000002, Avg: 0.000004, Limit: 10000, Count: 1229, Valid: 1
+Passes: 446895, Time: 20.000023, Avg: 0.000045, Limit: 100000, Count: 9592, Valid: 1
+Passes: 39276, Time: 20.000456, Avg: 0.000509, Limit: 1000000, Count: 78498, Valid: 1
+Passes: 3441, Time: 20.000764, Avg: 0.005812, Limit: 10000000, Count: 664579, Valid: 1
+Passes: 221, Time: 20.041402, Avg: 0.090685, Limit: 100000000, Count: 5761455, Valid: 1
+Passes: 6, Time: 20.547532, Avg: 3.424589, Limit: 1000000000, Count: 50847534, Valid: 1
+Passes: 3, Time: 23.595887, Avg: 7.865296, Limit: 2147483647, Count: 105097565, Valid: 1
 ```
 
-### AdvBitManip
+### FFSTwos
 ```
-Passes: 1000000, Time: 0.045085, Avg: 0.000000, Limit: 10, Count: 4, Valid: 1
-Passes: 1000000, Time: 0.103998, Avg: 0.000000, Limit: 100, Count: 25, Valid: 1
-Passes: 1000000, Time: 0.487193, Avg: 0.000000, Limit: 1000, Count: 168, Valid: 1
-Passes: 1000000, Time: 4.759544, Avg: 0.000005, Limit: 10000, Count: 1229, Valid: 1
-Passes: 311104, Time: 15.000001, Avg: 0.000048, Limit: 100000, Count: 9592, Valid: 1
-Passes: 28113, Time: 15.000061, Avg: 0.000534, Limit: 1000000, Count: 78498, Valid: 1
-Passes: 2499, Time: 15.000378, Avg: 0.006003, Limit: 10000000, Count: 664579, Valid: 1
-Passes: 182, Time: 15.076992, Avg: 0.082841, Limit: 100000000, Count: 5761455, Valid: 1
-Passes: 6, Time: 17.867965, Avg: 2.977994, Limit: 1000000000, Count: 50847534, Valid: 1
-Passes: 3, Time: 20.416346, Avg: 6.805449, Limit: 2147483647, Count: 105097565, Valid: 1
+Passes: 100000000, Time: 3.518766, Avg: 0.000000, Limit: 10, Count: 4, Valid: 1
+Passes: 100000000, Time: 10.000443, Avg: 0.000000, Limit: 100, Count: 25, Valid: 1
+Passes: 44965515, Time: 20.000000, Avg: 0.000000, Limit: 1000, Count: 168, Valid: 1
+Passes: 4489940, Time: 20.000003, Avg: 0.000004, Limit: 10000, Count: 1229, Valid: 1
+Passes: 422129, Time: 20.000028, Avg: 0.000047, Limit: 100000, Count: 9592, Valid: 1
+Passes: 38210, Time: 20.000374, Avg: 0.000523, Limit: 1000000, Count: 78498, Valid: 1
+Passes: 3412, Time: 20.001032, Avg: 0.005862, Limit: 10000000, Count: 664579, Valid: 1
+Passes: 235, Time: 20.045280, Avg: 0.085299, Limit: 100000000, Count: 5761455, Valid: 1
+Passes: 7, Time: 22.450402, Avg: 3.207200, Limit: 1000000000, Count: 50847534, Valid: 1
+Passes: 3, Time: 22.111328, Avg: 7.370443, Limit: 2147483647, Count: 105097565, Valid: 1
+```
+
+### FFSThrees
+```
+Passes: 100000000, Time: 3.557657, Avg: 0.000000, Limit: 10, Count: 4, Valid: 1
+Passes: 100000000, Time: 8.163533, Avg: 0.000000, Limit: 100, Count: 25, Valid: 1
+Passes: 61352678, Time: 20.000000, Avg: 0.000000, Limit: 1000, Count: 168, Valid: 1
+Passes: 6577509, Time: 20.000001, Avg: 0.000003, Limit: 10000, Count: 1229, Valid: 1
+Passes: 633431, Time: 20.000027, Avg: 0.000032, Limit: 100000, Count: 9592, Valid: 1
+Passes: 56056, Time: 20.000087, Avg: 0.000357, Limit: 1000000, Count: 78498, Valid: 1
+Passes: 4984, Time: 20.001994, Avg: 0.004013, Limit: 10000000, Count: 664579, Valid: 1
+Passes: 414, Time: 20.044322, Avg: 0.048416, Limit: 100000000, Count: 5761455, Valid: 1
+Passes: 8, Time: 20.087435, Avg: 2.510929, Limit: 1000000000, Count: 50847534, Valid: 1
+Passes: 4, Time: 23.363038, Avg: 5.840759, Limit: 2147483647, Count: 105097565, Valid: 1
 ```
 
 For some reason the original code seemed to benefit quite heavily from tuned assembly.
-The AdvBitManip didn't appear to benefit quite as heavily from the same option.
-Its also interesting to note that the original code performed better at smaller sample sizes, however as the size grew the tables began to turn. This is likely because as you get to larger numbers, the distances between consecutive primes grows. The AdvBitManip code takes advantage here as it can quickly skip across the larger gaps.
+The FFSTwos didn't appear to benefit quite as heavily from the same option.
+Its also interesting to note that the original code performed better at smaller sample sizes, however as the size grew the tables began to turn. This is likely because as you get to larger numbers, the distances between consecutive primes grows. The FFSTwos code takes advantage here as it can quickly skip across the larger gaps.
+In any case the largest performance gap was from ignoring multiples of 2 and 3 from the prime sieve bitset, especially as the set grew in size.
 

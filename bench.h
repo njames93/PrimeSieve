@@ -9,20 +9,23 @@
 #include <chrono>
 #include <optional>
 
+constexpr std::chrono::milliseconds DefaultBenchTime(20000);
+
+constexpr unsigned Checks[] = {
+    10,        100,        1'000,       10'000,        100'000,
+    1'000'000, 10'000'000, 100'000'000, 1'000'000'000, 2'147'483'647};
+
 template <typename PrimeSieve>
-void benchmark(std::chrono::milliseconds BenchTime)
+void benchmarkByTime(std::chrono::milliseconds BenchTime)
 {
-    unsigned Checks[] = {
-        10,        100,        1'000,       10'000,        100'000,
-        1'000'000, 10'000'000, 100'000'000, 1'000'000'000, 2'147'483'647};
+    std::optional<PrimeSieve> sieve;
     for (auto SieveSize : Checks)
     {
         unsigned passes = 0;
-        std::optional<PrimeSieve> sieve;
 
         auto tStart = std::chrono::steady_clock::now();
         auto tEnd = tStart + BenchTime;
-        while (std::chrono::steady_clock::now() < tEnd && passes < 1'000'000)
+        while (std::chrono::steady_clock::now() < tEnd)
         {
             sieve.emplace(SieveSize);
             sieve->runSieve();
@@ -39,6 +42,41 @@ void benchmark(std::chrono::milliseconds BenchTime)
                 passes);
         }
     }
+}
+
+template <typename PrimeSieve>
+void passLimitedBenchmark(std::chrono::milliseconds BenchTime,
+                          unsigned PassLimit)
+{
+    std::optional<PrimeSieve> sieve;
+    for (auto SieveSize : Checks)
+    {
+        unsigned passes = 0;
+
+        auto tStart = std::chrono::steady_clock::now();
+        auto tEnd = tStart + BenchTime;
+        while (std::chrono::steady_clock::now() < tEnd && passes < PassLimit)
+        {
+            sieve.emplace(SieveSize);
+            sieve->runSieve();
+            passes++;
+        }
+        auto tD = std::chrono::steady_clock::now() - tStart;
+
+        if (sieve)
+        {
+            sieve->printResults(
+                false,
+                std::chrono::duration_cast<std::chrono::duration<double>>(tD)
+                    .count(),
+                passes);
+        }
+    }
+}
+
+template <typename PrimeSieve> void benchmark()
+{
+    passLimitedBenchmark<PrimeSieve>(DefaultBenchTime, 100'000'000);
 }
 
 #endif // BENCH_H

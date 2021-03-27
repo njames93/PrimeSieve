@@ -13,10 +13,26 @@ if(USE_HOST_ARCH)
   endif()
 endif()
 
+if(MSVC)
+  string(REGEX REPLACE "( |^)/EHs( |$)" " " NEW_FLAGS ${CMAKE_CXX_FLAGS})
+  string(REGEX REPLACE "( |^)/EHc( |$)" " " NEW_FLAGS ${NEW_FLAGS})
+  string(REGEX REPLACE "( |^)/EHsc( |$)" " " NEW_FLAGS ${NEW_FLAGS})
+  string(REGEX REPLACE "( |^)/GR( |$)" " " NEW_FLAGS ${NEW_FLAGS})
+  set(CMAKE_CXX_FLAGS "${NEW_FLAGS} /D _HAS_EXCEPTIONS=0 /EHs-c- /GR-")
+else()
+  string(REGEX REPLACE "( |^)-fexceptions( |$)" " " NEW_FLAGS
+                       "${CMAKE_CXX_FLAGS}")
+  string(REGEX REPLACE "( |^)-frtti( |$)" " " NEW_FLAGS "${NEW_FLAGS}")
+  set(CMAKE_CXX_FLAGS "${NEW_FLAGS} -fno-exceptions -fno-rtti")
+endif()
+
 add_library(PrimeValidation Validation.cpp)
 
 add_executable(Daves Dave.cpp)
 target_link_libraries(Daves PrimeValidation)
 
-add_executable(AdvBitManip AdvBitManip.cpp)
-target_link_libraries(AdvBitManip PrimeValidation)
+add_executable(FFSTwos FFSTwos.cpp)
+target_link_libraries(FFSTwos PrimeValidation)
+
+add_executable(FFSThrees FFSThrees.cpp)
+target_link_libraries(FFSThrees PrimeValidation)

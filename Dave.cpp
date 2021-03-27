@@ -6,13 +6,13 @@
 #include "validation.h"
 #include <cassert>
 #include <cmath>
+#include <cstdio>
 #include <cstring>
-#include <iostream>
 
 class prime_sieve
 {
   private:
-    int sieveSize = 0;
+    unsigned sieveSize = 0;
     unsigned char *rawbits = nullptr;
 
     bool validateResults()
@@ -51,7 +51,7 @@ class prime_sieve
     void runSieve()
     {
         unsigned factor = 3;
-        int q = sqrt(sieveSize);
+        unsigned q = static_cast<unsigned>(sqrt(sieveSize));
 
         while (factor <= q)
         {
@@ -107,6 +107,5 @@ class prime_sieve
 
 int main()
 {
-    using namespace std::chrono_literals;
-    benchmark<prime_sieve>(15000ms);
+    benchmark<prime_sieve>();
 }

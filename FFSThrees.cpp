@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// AdvBitManip.cpp : Prime sieve using advanced bit intrinsics.
+// FFSThrees.cpp : Prime sieve ignoring multiples of 2 and 3.
 // -----------------------------------------------------------------------------
 
 #include "bench.h"
@@ -8,9 +8,9 @@
 #include <cassert>
 #include <climits>
 #include <cmath>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <iostream>
 #include <span>
 
 class prime_sieve
@@ -25,7 +25,7 @@ class prime_sieve
     unsigned NumBits;
     unsigned NumBitWords;
     BitWord *RawBits;
-    int sieveSize;
+    unsigned sieveSize;
 
     void clearBit(unsigned Index)
     {
@@ -36,20 +36,26 @@ class prime_sieve
     bool isSet(unsigned Index) const
     {
         return (RawBits[Index / BITWORD_SIZE] &
-                (1 << (Index % BITWORD_SIZE))) != 0;
+                (BitWord(1) << (Index % BITWORD_SIZE))) != 0;
     }
 
-    static unsigned indexToNumber(unsigned index)
+    static unsigned indexToNumber(unsigned Index)
     {
-        // 0-> 3, 1-> 5, 2-> 7 etc.
-        return 2 * index + 3;
+        return Index * 2 + 5 + (Index & ~1);
     }
 
-    static unsigned numberToIndex(unsigned number)
+    static unsigned numberToIndex(unsigned Number)
     {
-        // 3-> 0, 5-> 1, 7-> 2 etc.
-        assert(number % 2 == 1 && number >= 3);
-        return (number - 3) / 2;
+        auto A = Number - 5;
+        return A / 3 + (A % 3) / 2;
+    }
+
+    static unsigned primeSieveSize(unsigned Limit)
+    {
+        auto A = Limit - 5;
+        auto Div = A / 6;
+        auto Mod = A % 6;
+        return Div * 2 + ((Mod < 2) ? 1 : 2);
     }
 
     unsigned countSetBits()
@@ -67,43 +73,41 @@ class prime_sieve
             return -1;
 
         unsigned FirstWord = StartIndex / BITWORD_SIZE;
-        unsigned LastWord = NumBitWords - 1;
 
         // Check subsequent words.
         // The code below is based on search for the first _set_ bit. If
         // we're searching for the first _unset_, we just take the
         // complement of each word before we use it and apply
         // the same method.
-        for (unsigned i = FirstWord; i <= LastWord; ++i)
-        {
-            BitWord Copy = RawBits[i];
 
-            if (i == FirstWord && (StartIndex % BITWORD_SIZE) != 0)
-            {
-                unsigned FirstBit = StartIndex % BITWORD_SIZE;
-                Copy &= ~(~BitWord(0) >> (BITWORD_SIZE - FirstBit));
-            }
-            if (Copy != 0)
-                return i * BITWORD_SIZE + std::countr_zero(Copy);
+        // Mask out bits of the the current word that are before StartIndex
+        BitWord Current = RawBits[FirstWord] & ~BitWord(0) << StartIndex;
+        if (Current != 0)
+            return FirstWord * BITWORD_SIZE + std::countr_zero(Current);
+
+        for (unsigned i = FirstWord + 1; i < NumBitWords; ++i)
+        {
+            if (RawBits[i] != 0)
+                return i * BITWORD_SIZE + std::countr_zero(RawBits[i]);
         }
         return -1;
     }
 
     void clearFactorsOf(unsigned PrimeIndex)
     {
-        // Prime = 2 * curIndex + 3.
-        // Mark numbers starting a 3 * prime and incrementing by 2 * prime as
-        // non prime. We then need to turn these numbers back into indexes. 3 *
-        // curIndex + 3 - optimised way to get start index 2 * curIndex + 3 -
-        // optimised way to get index increment.
-        for (auto index = 3 * PrimeIndex + 3; index < NumBits;
-             index += 2 * PrimeIndex + 3)
+        auto Prime = indexToNumber(PrimeIndex);
+        auto StartIndex = numberToIndex(Prime * 5);
+        auto Diff1 = StartIndex - PrimeIndex;
+        auto Diff2 = numberToIndex(Prime * 7) - StartIndex;
+        bool OddIter = true;
+        for (auto index = StartIndex; index < NumBits;
+             index += (OddIter ^= true) ? Diff1 : Diff2)
             clearBit(index);
     }
 
   public:
     prime_sieve(int n)
-        : NumBits((n - 1) / 2),
+        : NumBits(primeSieveSize(n)),
           NumBitWords((NumBits + BITWORD_SIZE - 1) / BITWORD_SIZE),
           RawBits(
               static_cast<BitWord *>(malloc(NumBitWords * sizeof(BitWord)))),
@@ -120,9 +124,9 @@ class prime_sieve
 
     void runSieve()
     {
-        int q = sqrt(sieveSize);
+        unsigned q = static_cast<unsigned>(sqrt(sieveSize));
 
-        int max = (q - 1) / 2;
+        unsigned max = (q - 1) / 2;
 
         clearFactorsOf(0);
         for (unsigned curIndex = findNextSetBit(1); curIndex <= max;
@@ -135,8 +139,8 @@ class prime_sieve
         if (showResults)
             printf("2, ");
 
-        int count = 1;
-        for (unsigned Index = findNextSetBit(0); Index <= NumBits;
+        int count = 2;
+        for (unsigned Index = findNextSetBit(0); Index < NumBits;
              Index = findNextSetBit(Index + 1))
         {
             auto Prime = indexToNumber(Index);
@@ -157,12 +161,11 @@ class prime_sieve
     int countPrimes()
     {
         // Add 1 as '2' is prime but not in bitset.
-        return 1 + countSetBits();
+        return 2 + countSetBits();
     }
 };
 
 int main()
 {
-    using namespace std::chrono_literals;
-    benchmark<prime_sieve>(15000ms);
+    benchmark<prime_sieve>();
 }
