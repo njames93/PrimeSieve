@@ -47,7 +47,7 @@ class prime_sieve
     }
 
   public:
-    prime_sieve(int n) : Bits(primeSieveSize(n)), sieveSize(n)
+    prime_sieve(unsigned n) : Bits(primeSieveSize(n)), sieveSize(n)
     {
     }
 
@@ -63,33 +63,32 @@ class prime_sieve
             clearFactorsOf(curIndex);
     }
 
-    void printResults(bool showResults, double duration, int passes)
+    void printResults(bool showResults, double duration, unsigned passes)
     {
         if (showResults)
             printf("2, ");
 
-        int count = 2;
+        unsigned count = 2;
         for (unsigned Index = Bits.findNextSet(0); Index < Bits.size();
              Index = Bits.findNextSet(Index + 1))
         {
-            auto Prime = indexToNumber(Index);
             if (showResults)
-                printf("%d, ", Prime);
+                printf("%d, ", indexToNumber(Index));
             count++;
         }
 
         if (showResults)
             printf("\n");
 
-        printf("Passes: %d, Time: %lf, Avg: %lf, Limit: %d, Count: %d, Valid: "
+        printf("Passes: %u, Time: %lf, Avg: %lf, Limit: %u, Count: %u, Valid: "
                "%d\n",
                passes, duration, duration / passes, sieveSize, count,
                validateNumberOfPrimes(sieveSize, count));
     }
 
-    int countPrimes()
+    unsigned countPrimes()
     {
-        // Add 1 as '2' is prime but not in bitset.
+        // Add 2 as '2' and '3' are prime but not in bitset.
         return 2 + Bits.count();
     }
 };

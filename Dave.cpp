@@ -20,14 +20,14 @@ class prime_sieve
         return validateNumberOfPrimes(sieveSize, countPrimes());
     }
 
-    bool GetBit(unsigned int index)
+    bool GetBit(unsigned index)
     {
         assert(index % 2 != 0);
         index = index / 2;
         return ((rawbits[index / 8]) & (1 << (index % 8))) != 0;
     }
 
-    void ClearBit(unsigned int index)
+    void ClearBit(unsigned index)
     {
         assert(index % 2 != 0);
         index = index / 2;
@@ -35,7 +35,7 @@ class prime_sieve
     }
 
   public:
-    prime_sieve(int n)
+    prime_sieve(unsigned n)
     {
         sieveSize = n;
         rawbits = (unsigned char *)malloc(n / 8 + 1);
@@ -70,12 +70,12 @@ class prime_sieve
         }
     }
 
-    void printResults(bool showResults, double duration, int passes)
+    void printResults(bool showResults, double duration, unsigned passes)
     {
         if (showResults)
             printf("2, ");
 
-        int count = 1;
+        unsigned count = 1;
         for (unsigned num = 3; num <= sieveSize; num += 2)
         {
             if (GetBit(num))
@@ -89,15 +89,15 @@ class prime_sieve
         if (showResults)
             printf("\n");
 
-        printf("Passes: %d, Time: %lf, Avg: %lf, Limit: %d, Count: %d, Valid: "
+        printf("Passes: %u, Time: %lf, Avg: %lf, Limit: %u, Count: %u, Valid: "
                "%d\n",
                passes, duration, duration / passes, sieveSize, count,
                validateNumberOfPrimes(sieveSize, count));
     }
 
-    int countPrimes()
+    unsigned countPrimes()
     {
-        int count = 1;
+        unsigned count = 1;
         for (unsigned i = 3; i < sieveSize; i += 2)
             if (GetBit(i))
                 count++;
