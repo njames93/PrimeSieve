@@ -17,12 +17,14 @@ class sieve_bitset
     {
         BITWORD_SIZE = (unsigned)sizeof(BitWord) * CHAR_BIT
     };
-    unsigned NumBits;
-    unsigned NumBitWords;
+    size_t NumBits;
+    size_t NumBitWords;
     BitWord *RawBits;
 
   public:
-    sieve_bitset(unsigned NumBits)
+    static constexpr size_t npos = ~0ULL;
+
+    sieve_bitset(size_t NumBits)
         : NumBits(NumBits),
           NumBitWords((NumBits + BITWORD_SIZE - 1) / BITWORD_SIZE),
           RawBits(static_cast<BitWord *>(malloc(NumBitWords * sizeof(BitWord))))
@@ -35,26 +37,26 @@ class sieve_bitset
     {
         free(RawBits);
     }
-    void clear(unsigned Index)
+    void clear(size_t Index)
     {
         RawBits[Index / BITWORD_SIZE] &=
             ~(BitWord(1) << (Index % BITWORD_SIZE));
     }
 
-    bool isSet(unsigned Index) const
+    bool isSet(size_t Index) const
     {
         return (RawBits[Index / BITWORD_SIZE] &
                 (BitWord(1) << (Index % BITWORD_SIZE))) != 0;
     }
 
-    unsigned size() const
+    size_t size() const
     {
         return NumBits;
     }
 
-    unsigned count() const
+    size_t count() const
     {
-        unsigned Sum{0};
+        size_t Sum{0};
         for (auto Item : std::span(RawBits, NumBitWords))
         {
             Sum += std::popcount(Item);
@@ -62,24 +64,24 @@ class sieve_bitset
         return Sum;
     }
 
-    unsigned findNextSet(unsigned StartIndex) const
+    size_t findNextSet(size_t StartIndex) const
     {
         if (StartIndex == NumBits)
-            return -1;
+            return npos;
 
-        unsigned FirstWord = StartIndex / BITWORD_SIZE;
+        size_t FirstWord = StartIndex / BITWORD_SIZE;
+        size_t ExtraBits = StartIndex % BITWORD_SIZE;
 
-        // Mask out bits of the the current word that are before StartIndex
-        BitWord Current = RawBits[FirstWord] & ~BitWord(0) << StartIndex;
-        if (Current != 0)
-            return FirstWord * BITWORD_SIZE + std::countr_zero(Current);
+        if (BitWord Current = RawBits[FirstWord] >> ExtraBits; Current != 0)
+            return FirstWord * BITWORD_SIZE + std::countr_zero(Current) +
+                   ExtraBits;
 
-        for (unsigned I = FirstWord + 1; I < NumBitWords; ++I)
+        for (size_t I = FirstWord + 1; I != NumBitWords; ++I)
         {
             if (RawBits[I] != 0)
                 return I * BITWORD_SIZE + std::countr_zero(RawBits[I]);
         }
-        return -1;
+        return npos;
     }
 };
 

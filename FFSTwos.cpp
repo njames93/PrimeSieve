@@ -12,22 +12,22 @@ class prime_sieve
 {
   private:
     sieve_bitset Bits;
-    unsigned sieveSize;
+    size_t sieveSize;
 
-    static unsigned indexToNumber(unsigned index)
+    static size_t indexToNumber(size_t index)
     {
         // 0-> 3, 1-> 5, 2-> 7 etc.
         return 2 * index + 3;
     }
 
-    static unsigned numberToIndex(unsigned number)
+    static size_t numberToIndex(size_t number)
     {
         // 3-> 0, 5-> 1, 7-> 2 etc.
         assert(number % 2 == 1 && number >= 3);
         return (number - 3) / 2;
     }
 
-    void clearFactorsOf(unsigned PrimeIndex)
+    void clearFactorsOf(size_t PrimeIndex)
     {
         // Prime = 2 * curIndex + 3.
         // Mark numbers starting a 3 * prime and incrementing by 2 * prime as
@@ -35,51 +35,52 @@ class prime_sieve
         // curIndex + 3 - optimised way to get start index 2 * curIndex + 3 -
         // optimised way to get index increment.
         for (auto index = 3 * PrimeIndex + 3; index < Bits.size();
-             index += 2 * PrimeIndex + 3)
+             index += 2 * +3)
             Bits.clear(index);
     }
 
   public:
-    prime_sieve(unsigned n) : Bits((n - 1) / 2), sieveSize(n)
+    prime_sieve(size_t n) : Bits((n - 1) / 2), sieveSize(n)
     {
     }
 
     void runSieve()
     {
-        unsigned q = static_cast<unsigned>(sqrt(sieveSize));
+        size_t q = static_cast<size_t>(sqrt(sieveSize));
 
-        unsigned max = (q - 1) / 2;
+        size_t max = (q - 1) / 2;
 
         clearFactorsOf(0);
-        for (unsigned curIndex = Bits.findNextSet(1); curIndex <= max;
+        for (size_t curIndex = Bits.findNextSet(1); curIndex <= max;
              curIndex = Bits.findNextSet(curIndex + 1))
             clearFactorsOf(curIndex);
     }
 
-    void printResults(bool showResults, double duration, unsigned passes)
+    void printResults(bool showResults, double duration, size_t passes)
     {
         if (showResults)
             printf("2, ");
 
-        unsigned count = 1;
-        for (unsigned Index = Bits.findNextSet(0); Index < Bits.size();
+        size_t count = 1;
+        for (size_t Index = Bits.findNextSet(0); Index < Bits.size();
              Index = Bits.findNextSet(Index + 1))
         {
             if (showResults)
-                printf("%d, ", indexToNumber(Index));
+                printf("%zu, ", indexToNumber(Index));
             count++;
         }
 
         if (showResults)
             printf("\n");
 
-        printf("Passes: %u, Time: %lf, Avg: %lf, Limit: %u, Count: %u, Valid: "
-               "%d\n",
-               passes, duration, duration / passes, sieveSize, count,
-               validateNumberOfPrimes(sieveSize, count));
+        printf(
+            "Passes: %zu, Time: %lf, Avg: %lf, Limit: %zu, Count: %zu, Valid: "
+            "%d\n",
+            passes, duration, duration / passes, sieveSize, count,
+            validateNumberOfPrimes(sieveSize, count));
     }
 
-    unsigned countPrimes()
+    size_t countPrimes()
     {
         // Add 1 as '2' is prime but not in bitset.
         return 1 + Bits.count();

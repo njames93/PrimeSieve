@@ -13,6 +13,10 @@ if(USE_HOST_ARCH)
   endif()
 endif()
 
+add_library(options INTERFACE)
+include(cmake/Sanitizers.cmake)
+enable_sanitizers(options)
+
 if(MSVC)
   string(REGEX REPLACE "( |^)/EHs( |$)" " " NEW_FLAGS ${CMAKE_CXX_FLAGS})
   string(REGEX REPLACE "( |^)/EHc( |$)" " " NEW_FLAGS ${NEW_FLAGS})
@@ -29,10 +33,10 @@ endif()
 add_library(PrimeValidation Validation.cpp)
 
 add_executable(Daves Dave.cpp)
-target_link_libraries(Daves PrimeValidation)
+target_link_libraries(Daves PrimeValidation options)
 
 add_executable(FFSTwos FFSTwos.cpp)
-target_link_libraries(FFSTwos PrimeValidation)
+target_link_libraries(FFSTwos PrimeValidation options)
 
 add_executable(FFSThrees FFSThrees.cpp)
-target_link_libraries(FFSThrees PrimeValidation)
+target_link_libraries(FFSThrees PrimeValidation options)

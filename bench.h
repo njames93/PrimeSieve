@@ -7,13 +7,14 @@
 #define BENCH_H
 
 #include <chrono>
+#include <cstdint>
 #include <optional>
 
-constexpr std::chrono::milliseconds DefaultBenchTime(20000);
+constexpr std::chrono::milliseconds DefaultBenchTime(5000);
 
 constexpr unsigned Checks[] = {
-    10,        100,        1'000,       10'000,        100'000,
-    1'000'000, 10'000'000, 100'000'000, 1'000'000'000, 2'147'483'647};
+    10,         100,         1'000,         10'000,        100'000,   1'000'000,
+    10'000'000, 100'000'000, 1'000'000'000, 2'147'483'647, UINT32_MAX};
 
 template <typename PrimeSieve>
 void benchmarkByTime(std::chrono::milliseconds BenchTime)
