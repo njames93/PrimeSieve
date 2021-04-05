@@ -52,6 +52,20 @@ class prime_sieve
     {
         auto Prime = indexToNumber(PrimeIndex);
         auto StartIndex = numberToIndex(Prime * 5);
+        // As we skip multiples of 2 and 3 from our representation, not all
+        // multiples of the prime will appear in our representation.
+        // For the example of 5, the sequence of numbers that need clearing is:
+        // 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75...
+        // However our bit representation doesn't include the multiples of 2 or
+        // 3 so we only have:
+        // 5, 25, 35, 55, 65...
+        // This loosely boils down to clearing multiples of:
+        // 5, 7, 11, 13...
+        // The gaps between successive multiples repeats as:
+        // 4, 2, 4, 2, 4, 2...
+        // Therefore we need to store the difference in index from the actual
+        // PrimeIndex to its multiple of 5, and the difference of its multiple
+        // of 7 to multiple of 5. And on each iteration, swap between the 2.
         auto Diff1 = StartIndex - PrimeIndex;
         auto Diff2 = numberToIndex(Prime * 7) - StartIndex;
         bool OddIter = true;
@@ -91,20 +105,24 @@ class prime_sieve
 
     void printResults(bool ShowResults, double Duration, size_t Passes)
     {
+        size_t Count = 0;
         if (ShowResults)
-            printf("2, ");
-
-        size_t Count = 2;
-        for (size_t Index = Bits.findNextSet(0); Index < Bits.size();
-             Index = Bits.findNextSet(Index + 1))
         {
-            if (ShowResults)
+            printf("2, 3, ");
+            Count = 2;
+            for (size_t Index = Bits.findNextSet(0); Index < Bits.size();
+                 Index = Bits.findNextSet(Index + 1))
+            {
                 printf("%zu, ", indexToNumber(Index));
-            Count++;
-        }
+                Count++;
+            }
 
-        if (ShowResults)
             printf("\n");
+        }
+        else
+        {
+            Count = countPrimes();
+        }
 
         printf(
             "Passes: %zu, Time: %lf, Avg: %lf, Limit: %zu, Count: %zu, Valid: "

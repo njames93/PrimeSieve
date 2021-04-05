@@ -46,11 +46,12 @@ class prime_sieve
     /// non prime.
     void clearMultiplesOfIndex(size_t PrimeIndex)
     {
-        // Prime = 2 * curIndex + 3.
+        // Prime = 2 * PrimeIndex + 3.
         // Mark numbers starting a 3 * prime and incrementing by 2 * prime as
-        // non prime. We then need to turn these numbers back into indexes. 3 *
-        // curIndex + 3 - optimised way to get start index 2 * curIndex + 3 -
-        // optimised way to get index increment.
+        // non prime.
+        // We then need to turn these numbers back into indexes.
+        // 3 * PrimeIndex + 3 - optimised way to get start index.
+        // 2 * PrimeIndex + 3 - optimised way to get index increment.
         for (auto Index = 3 * PrimeIndex + 3; Index < Bits.size();
              Index += 2 * PrimeIndex + 3)
             Bits.clear(Index);
@@ -80,20 +81,24 @@ class prime_sieve
 
     void printResults(bool ShowResults, double Duration, size_t Passes)
     {
+        size_t Count = 0;
         if (ShowResults)
-            printf("2, ");
-
-        size_t Count = 1;
-        for (size_t Index = Bits.findNextSet(0); Index < Bits.size();
-             Index = Bits.findNextSet(Index + 1))
         {
-            if (ShowResults)
+            printf("2, ");
+            Count = 1;
+            for (size_t Index = Bits.findNextSet(0); Index < Bits.size();
+                 Index = Bits.findNextSet(Index + 1))
+            {
                 printf("%zu, ", indexToNumber(Index));
-            Count++;
-        }
+                Count++;
+            }
 
-        if (ShowResults)
             printf("\n");
+        }
+        else
+        {
+            Count = countPrimes();
+        }
 
         printf(
             "Passes: %zu, Time: %lf, Avg: %lf, Limit: %zu, Count: %zu, Valid: "
