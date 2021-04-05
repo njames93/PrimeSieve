@@ -19,28 +19,28 @@ constexpr unsigned Checks[] = {
 template <typename PrimeSieve>
 void benchmarkByTime(std::chrono::milliseconds BenchTime)
 {
-    std::optional<PrimeSieve> sieve;
+    std::optional<PrimeSieve> Sieve;
     for (auto SieveSize : Checks)
     {
-        unsigned passes = 0;
+        unsigned Passes = 0;
 
-        auto tStart = std::chrono::steady_clock::now();
-        auto tEnd = tStart + BenchTime;
-        while (std::chrono::steady_clock::now() < tEnd)
+        auto TStart = std::chrono::steady_clock::now();
+        auto TEnd = TStart + BenchTime;
+        while (std::chrono::steady_clock::now() < TEnd)
         {
-            sieve.emplace(SieveSize);
-            sieve->runSieve();
-            passes++;
+            Sieve.emplace(SieveSize);
+            Sieve->runSieve();
+            Passes++;
         }
-        auto tD = std::chrono::steady_clock::now() - tStart;
+        auto TD = std::chrono::steady_clock::now() - TStart;
 
-        if (sieve)
+        if (Sieve)
         {
-            sieve->printResults(
+            Sieve->printResults(
                 false,
-                std::chrono::duration_cast<std::chrono::duration<double>>(tD)
+                std::chrono::duration_cast<std::chrono::duration<double>>(TD)
                     .count(),
-                passes);
+                Passes);
         }
     }
 }
@@ -49,28 +49,28 @@ template <typename PrimeSieve>
 void passLimitedBenchmark(std::chrono::milliseconds BenchTime,
                           unsigned PassLimit)
 {
-    std::optional<PrimeSieve> sieve;
+    std::optional<PrimeSieve> Sieve;
     for (auto SieveSize : Checks)
     {
-        unsigned passes = 0;
+        unsigned Passes = 0;
 
-        auto tStart = std::chrono::steady_clock::now();
-        auto tEnd = tStart + BenchTime;
-        while (std::chrono::steady_clock::now() < tEnd && passes < PassLimit)
+        auto TStart = std::chrono::steady_clock::now();
+        auto TEnd = TStart + BenchTime;
+        while (std::chrono::steady_clock::now() < TEnd && Passes < PassLimit)
         {
-            sieve.emplace(SieveSize);
-            sieve->runSieve();
-            passes++;
+            Sieve.emplace(SieveSize);
+            Sieve->runSieve();
+            Passes++;
         }
-        auto tD = std::chrono::steady_clock::now() - tStart;
+        auto TD = std::chrono::steady_clock::now() - TStart;
 
-        if (sieve)
+        if (Sieve)
         {
-            sieve->printResults(
+            Sieve->printResults(
                 false,
-                std::chrono::duration_cast<std::chrono::duration<double>>(tD)
+                std::chrono::duration_cast<std::chrono::duration<double>>(TD)
                     .count(),
-                passes);
+                Passes);
         }
     }
 }

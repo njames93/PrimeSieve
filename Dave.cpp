@@ -12,96 +12,96 @@
 class prime_sieve
 {
   private:
-    unsigned sieveSize = 0;
-    unsigned char *rawbits = nullptr;
+    unsigned SieveSize = 0;
+    unsigned char *Rawbits = nullptr;
 
     bool validateResults()
     {
-        return validateNumberOfPrimes(sieveSize, countPrimes());
+        return validateNumberOfPrimes(SieveSize, countPrimes());
     }
 
-    bool GetBit(unsigned index)
+    bool getBit(unsigned Index)
     {
-        assert(index % 2 != 0);
-        index = index / 2;
-        return ((rawbits[index / 8]) & (1 << (index % 8))) != 0;
+        assert(Index % 2 != 0);
+        Index = Index / 2;
+        return ((Rawbits[Index / 8]) & (1 << (Index % 8))) != 0;
     }
 
-    void ClearBit(unsigned index)
+    void clearBit(unsigned Index)
     {
-        assert(index % 2 != 0);
-        index = index / 2;
-        rawbits[index / 8] &= ~(1 << (index % 8));
+        assert(Index % 2 != 0);
+        Index = Index / 2;
+        Rawbits[Index / 8] &= ~(1 << (Index % 8));
     }
 
   public:
-    prime_sieve(unsigned n)
+    prime_sieve(unsigned N)
+        : SieveSize(N), Rawbits((unsigned char *)malloc(N / 8 + 1))
     {
-        sieveSize = n;
-        rawbits = (unsigned char *)malloc(n / 8 + 1);
-        if (rawbits)
-            memset(rawbits, 0xff, n / 8 + 1);
+
+        if (Rawbits)
+            memset(Rawbits, 0xff, N / 8 + 1);
     }
 
     ~prime_sieve()
     {
-        free(rawbits);
+        free(Rawbits);
     }
 
     void runSieve()
     {
-        unsigned factor = 3;
-        unsigned q = static_cast<unsigned>(sqrt(sieveSize));
+        unsigned Factor = 3;
+        unsigned Q = static_cast<unsigned>(sqrt(SieveSize));
 
-        while (factor <= q)
+        while (Factor <= Q)
         {
-            for (unsigned num = factor; num < sieveSize; num += 2)
+            for (unsigned Num = Factor; Num < SieveSize; Num += 2)
             {
-                if (GetBit(num))
+                if (getBit(Num))
                 {
-                    factor = num;
+                    Factor = Num;
                     break;
                 }
             }
-            for (unsigned num = factor * 3; num < sieveSize; num += factor * 2)
-                ClearBit(num);
+            for (unsigned Num = Factor * 3; Num < SieveSize; Num += Factor * 2)
+                clearBit(Num);
 
-            factor += 2;
+            Factor += 2;
         }
     }
 
-    void printResults(bool showResults, double duration, unsigned passes)
+    void printResults(bool ShowResults, double Duration, unsigned Passes)
     {
-        if (showResults)
+        if (ShowResults)
             printf("2, ");
 
-        unsigned count = 1;
-        for (unsigned num = 3; num <= sieveSize; num += 2)
+        unsigned Count = 1;
+        for (unsigned Num = 3; Num <= SieveSize; Num += 2)
         {
-            if (GetBit(num))
+            if (getBit(Num))
             {
-                if (showResults)
-                    printf("%d, ", num);
-                count++;
+                if (ShowResults)
+                    printf("%d, ", Num);
+                Count++;
             }
         }
 
-        if (showResults)
+        if (ShowResults)
             printf("\n");
 
         printf("Passes: %u, Time: %lf, Avg: %lf, Limit: %u, Count: %u, Valid: "
                "%d\n",
-               passes, duration, duration / passes, sieveSize, count,
-               validateNumberOfPrimes(sieveSize, count));
+               Passes, Duration, Duration / Passes, SieveSize, Count,
+               validateNumberOfPrimes(SieveSize, Count));
     }
 
     unsigned countPrimes()
     {
-        unsigned count = 1;
-        for (unsigned i = 3; i < sieveSize; i += 2)
-            if (GetBit(i))
-                count++;
-        return count;
+        unsigned Count = 1;
+        for (unsigned I = 3; I < SieveSize; I += 2)
+            if (getBit(I))
+                Count++;
+        return Count;
     }
 };
 

@@ -13,7 +13,7 @@ class prime_sieve
 {
   private:
     sieve_bitset Bits;
-    size_t sieveSize;
+    size_t SieveSize;
 
     /// Convers an index in the bitset to its corresponding number.
     /// Theses are from a sequence of all positive numbers greater than 3 that
@@ -55,33 +55,33 @@ class prime_sieve
         auto Diff1 = StartIndex - PrimeIndex;
         auto Diff2 = numberToIndex(Prime * 7) - StartIndex;
         bool OddIter = true;
-        for (auto index = StartIndex; index < Bits.size();
-             index += (OddIter ^= true) ? Diff1 : Diff2)
-            Bits.clear(index);
+        for (auto Index = StartIndex; Index < Bits.size();
+             Index += (OddIter ^= true) ? Diff1 : Diff2)
+            Bits.clear(Index);
     }
 
   public:
-    prime_sieve(size_t n) : Bits(primeSieveSize(n)), sieveSize(n)
+    prime_sieve(size_t N) : Bits(primeSieveSize(N)), SieveSize(N)
     {
     }
 
     void runSieve()
     {
-        size_t q = static_cast<size_t>(sqrt(sieveSize));
-        if (q < 5)
+        size_t Q = static_cast<size_t>(sqrt(SieveSize));
+        if (Q < 5)
             return;
 
-        // max is the largest index in the bit array that corresponds to a
-        // number less than or equal to q.
-        size_t max = primeSieveSize(q);
+        // Max is the largest index in the bit array that corresponds to a
+        // number less than or equal to Q.
+        size_t Max = primeSieveSize(Q);
 
         // 0 corresponds to the prime number 5 here.
         clearMultiplesOfIndex(0);
         // Loop over all set bits clearing all its multiples from the bitset.
         // This marks all those multiples as non prime.
-        for (size_t curIndex = Bits.findNextSet(1); curIndex <= max;
-             curIndex = Bits.findNextSet(curIndex + 1))
-            clearMultiplesOfIndex(curIndex);
+        for (size_t CurIndex = Bits.findNextSet(1); CurIndex <= Max;
+             CurIndex = Bits.findNextSet(CurIndex + 1))
+            clearMultiplesOfIndex(CurIndex);
     }
 
     const sieve_bitset &getBits() const
@@ -89,28 +89,28 @@ class prime_sieve
         return Bits;
     }
 
-    void printResults(bool showResults, double duration, size_t passes)
+    void printResults(bool ShowResults, double Duration, size_t Passes)
     {
-        if (showResults)
+        if (ShowResults)
             printf("2, ");
 
-        size_t count = 2;
+        size_t Count = 2;
         for (size_t Index = Bits.findNextSet(0); Index < Bits.size();
              Index = Bits.findNextSet(Index + 1))
         {
-            if (showResults)
+            if (ShowResults)
                 printf("%zu, ", indexToNumber(Index));
-            count++;
+            Count++;
         }
 
-        if (showResults)
+        if (ShowResults)
             printf("\n");
 
         printf(
             "Passes: %zu, Time: %lf, Avg: %lf, Limit: %zu, Count: %zu, Valid: "
             "%d\n",
-            passes, duration, duration / passes, sieveSize, count,
-            validateNumberOfPrimes(sieveSize, count));
+            Passes, Duration, Duration / Passes, SieveSize, Count,
+            validateNumberOfPrimes(SieveSize, Count));
     }
 
     size_t countPrimes()

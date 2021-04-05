@@ -12,27 +12,27 @@ class prime_sieve
 {
   private:
     sieve_bitset Bits;
-    size_t sieveSize;
+    size_t SieveSize;
 
-    /// Convers an index in the bitset to its corresponding number.
+    /// Convers an \p Index in the bitset to its corresponding number.
     /// Theses are from a sequence of all odd numbers greater than 2.
     /// 0 -> 3
     /// 1 -> 5
     /// 2 -> 7...
-    static size_t indexToNumber(size_t index)
+    static size_t indexToNumber(size_t Index)
     {
-        return 2 * index + 3;
+        return 2 * Index + 3;
     }
 
-    /// Convers an index in the bitset to its corresponding number.
+    /// Convers an index in the bitset to its corresponding \p Number.
     /// 3 -> 0
     /// 5 -> 1
     /// 7 -> 2...
     /// \pre \p Is an odd number > 2.
-    static size_t numberToIndex(size_t number)
+    static size_t numberToIndex(size_t Number)
     {
-        assert(number % 2 == 1 && number >= 3);
-        return (number - 3) / 2;
+        assert(Number % 2 == 1 && Number >= 3);
+        return (Number - 3) / 2;
     }
 
     /// Calculates how many bits are needed for a sieve up to \p Limit.
@@ -51,55 +51,55 @@ class prime_sieve
         // non prime. We then need to turn these numbers back into indexes. 3 *
         // curIndex + 3 - optimised way to get start index 2 * curIndex + 3 -
         // optimised way to get index increment.
-        for (auto index = 3 * PrimeIndex + 3; index < Bits.size();
-             index += 2 * PrimeIndex + 3)
-            Bits.clear(index);
+        for (auto Index = 3 * PrimeIndex + 3; Index < Bits.size();
+             Index += 2 * PrimeIndex + 3)
+            Bits.clear(Index);
     }
 
   public:
-    prime_sieve(size_t n) : Bits(primeSieveSize(n)), sieveSize(n)
+    prime_sieve(size_t N) : Bits(primeSieveSize(N)), SieveSize(N)
     {
     }
 
     void runSieve()
     {
-        size_t q = static_cast<size_t>(sqrt(sieveSize));
+        size_t Q = static_cast<size_t>(sqrt(SieveSize));
 
-        // max is the largest index in the bit array that corresponds to a
-        // number less than or equal to q.
-        size_t max = primeSieveSize(q);
+        // Max is the largest index in the bit array that corresponds to a
+        // number less than or equal to Q.
+        size_t Max = primeSieveSize(Q);
 
         // 0 corresponds to the prime number 3 here.
         clearMultiplesOfIndex(0);
         // Loop over all set bits clearing all its multiples from the bitset.
         // This marks all those multiples as non prime.
-        for (size_t curIndex = Bits.findNextSet(1); curIndex <= max;
-             curIndex = Bits.findNextSet(curIndex + 1))
-            clearMultiplesOfIndex(curIndex);
+        for (size_t CurIndex = Bits.findNextSet(1); CurIndex <= Max;
+             CurIndex = Bits.findNextSet(CurIndex + 1))
+            clearMultiplesOfIndex(CurIndex);
     }
 
-    void printResults(bool showResults, double duration, size_t passes)
+    void printResults(bool ShowResults, double Duration, size_t Passes)
     {
-        if (showResults)
+        if (ShowResults)
             printf("2, ");
 
-        size_t count = 1;
+        size_t Count = 1;
         for (size_t Index = Bits.findNextSet(0); Index < Bits.size();
              Index = Bits.findNextSet(Index + 1))
         {
-            if (showResults)
+            if (ShowResults)
                 printf("%zu, ", indexToNumber(Index));
-            count++;
+            Count++;
         }
 
-        if (showResults)
+        if (ShowResults)
             printf("\n");
 
         printf(
             "Passes: %zu, Time: %lf, Avg: %lf, Limit: %zu, Count: %zu, Valid: "
             "%d\n",
-            passes, duration, duration / passes, sieveSize, count,
-            validateNumberOfPrimes(sieveSize, count));
+            Passes, Duration, Duration / Passes, SieveSize, Count,
+            validateNumberOfPrimes(SieveSize, Count));
     }
 
     size_t countPrimes()
