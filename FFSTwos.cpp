@@ -14,20 +14,37 @@ class prime_sieve
     sieve_bitset Bits;
     size_t sieveSize;
 
+    /// Convers an index in the bitset to its corresponding number.
+    /// Theses are from a sequence of all odd numbers greater than 2.
+    /// 0 -> 3
+    /// 1 -> 5
+    /// 2 -> 7...
     static size_t indexToNumber(size_t index)
     {
-        // 0-> 3, 1-> 5, 2-> 7 etc.
         return 2 * index + 3;
     }
 
+    /// Convers an index in the bitset to its corresponding number.
+    /// 3 -> 0
+    /// 5 -> 1
+    /// 7 -> 2...
+    /// \pre \p Is an odd number > 2.
     static size_t numberToIndex(size_t number)
     {
-        // 3-> 0, 5-> 1, 7-> 2 etc.
         assert(number % 2 == 1 && number >= 3);
         return (number - 3) / 2;
     }
 
-    void clearFactorsOf(size_t PrimeIndex)
+    /// Calculates how many bits are needed for a sieve up to \p Limit.
+    static size_t primeSieveSize(size_t Limit)
+    {
+        return (Limit - 1) / 2;
+    }
+
+    /// Turns \p PrimeIndex into its prime number, then clears out every
+    /// multiple of it from the bitset to mark those corresponding numbers as
+    /// non prime.
+    void clearMultiplesOfIndex(size_t PrimeIndex)
     {
         // Prime = 2 * curIndex + 3.
         // Mark numbers starting a 3 * prime and incrementing by 2 * prime as
@@ -35,12 +52,12 @@ class prime_sieve
         // curIndex + 3 - optimised way to get start index 2 * curIndex + 3 -
         // optimised way to get index increment.
         for (auto index = 3 * PrimeIndex + 3; index < Bits.size();
-             index += 2 * +3)
+             index += 2 * PrimeIndex + 3)
             Bits.clear(index);
     }
 
   public:
-    prime_sieve(size_t n) : Bits((n - 1) / 2), sieveSize(n)
+    prime_sieve(size_t n) : Bits(primeSieveSize(n)), sieveSize(n)
     {
     }
 
@@ -48,12 +65,17 @@ class prime_sieve
     {
         size_t q = static_cast<size_t>(sqrt(sieveSize));
 
-        size_t max = (q - 1) / 2;
+        // max is the largest index in the bit array that corresponds to a
+        // number less than or equal to q.
+        size_t max = primeSieveSize(q);
 
-        clearFactorsOf(0);
+        // 0 corresponds to the prime number 3 here.
+        clearMultiplesOfIndex(0);
+        // Loop over all set bits clearing all its multiples from the bitset.
+        // This marks all those multiples as non prime.
         for (size_t curIndex = Bits.findNextSet(1); curIndex <= max;
              curIndex = Bits.findNextSet(curIndex + 1))
-            clearFactorsOf(curIndex);
+            clearMultiplesOfIndex(curIndex);
     }
 
     void printResults(bool showResults, double duration, size_t passes)
